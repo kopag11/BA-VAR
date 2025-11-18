@@ -373,7 +373,6 @@ block;"></div>
 
           
             const kodeToko = document.getElementById('kode_toko').value;
-            // Membersihkan string kodeToko (mengganti karakter non-alfanumerik dengan '_') 
             const safeKodeToko = kodeToko ? kodeToko.replace(/[^a-zA-Z0-9]/g, '_') : 'TANPA_KODE'; 
 
             const filename = `BA_VAR_${safeKodeToko}_${dateStr}.pdf`; 
@@ -381,7 +380,7 @@ block;"></div>
             // Konfigurasi html2pdf
             const opt = {
                 // Margin 10mm yang aman
-                margin: [10, 10, 10, 10], 
+                margin: [5, 10, 10, 10], 
                 filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
                 // Skala 1.0 yang aman
@@ -452,5 +451,6 @@ block;"></div>
     </script>
 </body>
 </html>
+
 
 
