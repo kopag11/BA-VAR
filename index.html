@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2.0">
-    <title>Berita Acara - Personil TTD & Bagikan PDF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Berita Acara - TTD dan Bagikan PDF</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -17,7 +17,7 @@
         }
 
         .container {
-            width: 180mm; 
+            width: 180mm; /* Layout Kertas Fixed */
             margin: 0 auto;
             padding: 0; 
             background-color: white;
@@ -41,7 +41,7 @@
             padding-right: 20px;
         }
 
-        /* Input Data (Garis bawah dipertahankan sebagai penanda kolom) */
+        /* Input Data */
         .data-input {
             margin-bottom: 15px;
             display: flex;
@@ -53,7 +53,7 @@
         .data-input input[type="text"] {
             flex-grow: 1;
             border: none;
-            border-bottom: 1px solid #000; /* Garis bawah input data */
+            border-bottom: 1px solid #000; 
             padding: 2px 5px;
             outline: none;
         }
@@ -75,12 +75,18 @@
             text-transform: uppercase;
         }
         
-        .keterangan-section input[type="text"] {
+        /* STYLE UNTUK INPUT DI KETERANGAN (TEKS & DATE) */
+        .keterangan-section input[type="text"],
+        .keterangan-section input[type="date"] { /* BARU: Ditambahkan input[type="date"] */
             border: none;
             border-bottom: 1px solid #000; 
             padding: 2px 5px;
             display: inline-block;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            width: 120px; /* Lebar disamakan */
         }
+
         textarea {
             width: 100%;
             height: 100px;
@@ -144,7 +150,7 @@
             font-weight: bold;
         }
 
-        /* Tombol Aksi */
+
         .actions {
             position: fixed;
             top: 10px;
@@ -170,14 +176,7 @@
             font-size: 0.7em;
             color: #666;
         }
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                min-height: auto;
-                margin: 0;
-                padding: 15px;
-                box-shadow: none;
-                
+        
         .hide-on-export {
             display: none !important;
         }
@@ -228,15 +227,14 @@
                                       style="width: 150px;">
             <p>
                 tanggal varian
-               <input type="date" id="tgl_kejadian" class="inline-input" style="width: auto;">
-                <span class="print-value" id="pv_tgl_kejadian"></span>
+                <input type="date" 
+                       id="tanggal_kejadian"> 
+                <span id="tanggal_kejadian_print" class="nilai-sales-temp" style="display:none; width: 120px; text-align: center;"></span>
             </p>
             <p>
                 Dengan kronologi sbb :
             </p>
-           <textarea id="kronologi" placeholder="Tuliskan kronologi..."></textarea>
-            <div class="print-value" id="pv_kronologi" style="border: 1px solid #000; padding: 10px; min-height: 80px; white-space: pre-wrap;"></div>
-        </div>
+<textarea placeholder="Tuliskan kronologi kejadian di sini..." id="kronologi"></textarea><div id="kronologi_print" style="display:none; white-space: pre-wrap; padding: 10px; min-height: 100px; border: none; background: none;"></div>
 
         <div class="penutup-section">
             <p>
@@ -289,44 +287,16 @@
 
     <script>
         
-      const today = new Date();
-        document.getElementById('tgl_buat').innerText = `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
-        
         function onlyNumbers(input) {
-            
             input.value = input.value.replace(/[^0-9]/g, '');
         }
 
- 
         function toUppercase(input) {
- 
             input.value = input.value.toUpperCase();
         }
 
-    
-        function formatTanggal(input) {
-            let value = input.value;
-            
-          
-            value = value.replace(/[^0-9-]/g, ''); 
-            
-            if (value.length > 10) {
-                value = value.substring(0, 10);
-            }
-
-          
-            if (value.length > 2 && value.charAt(2) !== '-') {
-                value = value.substring(0, 2) + '-' + value.substring(2);
-            }
-            
-            if (value.length > 5 && value.charAt(5) !== '-') {
-                value = value.substring(0, 5) + '-' + value.substring(5);
-            }
-            
-            input.value = value;
-        }
-
-      
+       
+        
         function formatAngka(input) {
             let angka = input.value.replace(/[^0-9]/g, '');
             let formatted = angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -337,9 +307,7 @@
         const ttdImages = document.querySelectorAll('.ttd-image');
         const controls = document.querySelectorAll('.ttd-controls');
 
-    
         function initSignaturePad(canvas) {
-            // ... (Kode inisialisasi tanda tangan tidak berubah) ...
             const ctx = canvas.getContext('2d');
             let isDrawing = false;
             let lastX = 0;
@@ -404,9 +372,8 @@
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
         }
-
-        
 
         function prepareForExport(state) {
             // state: 'exporting' atau 'done'
@@ -433,17 +400,39 @@
             });
         }
         
-      
-     
         async function sharePDF() {
-       
+            window.scrollTo(0,0); // Penting agar capture PDF dari atas
+
+            
             const nilaiInput = document.getElementById('nilai_sales');
             const nilaiSalesFormatted = nilaiInput.value;
-            const parentParagraph = nilaiInput.closest('p');
+            const parentParagraphNilai = nilaiInput.closest('p');
             
-            if (parentParagraph) {
-                 parentParagraph.innerHTML = `senilai : Rp. <span class="nilai-sales-temp">${nilaiSalesFormatted}</span>`;
+            
+            const originalNilaiHTML = parentParagraphNilai ? parentParagraphNilai.innerHTML : null;
+            
+            if (parentParagraphNilai) {
+                 parentParagraphNilai.innerHTML = `senilai : Rp. <span class="nilai-sales-temp">${nilaiSalesFormatted}</span>`;
             }
+
+            
+            const tglInput = document.getElementById('tanggal_kejadian');
+            const tglSpan = document.getElementById('tanggal_kejadian_print');
+            let tglFormatted = '';
+
+            if(tglInput.value) {
+                // Ambil nilai dari date picker (YYYY-MM-DD)
+                const dateParts = tglInput.value.split('-');
+                if(dateParts.length === 3) {
+                    // Format menjadi DD-MM-YYYY
+                    tglFormatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                }
+            }
+            
+            // Sembunyikan input, tampilkan span yang sudah diformat
+            tglSpan.innerText = tglFormatted;
+            tglInput.style.display = 'none';
+            tglSpan.style.display = 'inline-block';
 
           
             prepareForExport('exporting');
@@ -456,42 +445,32 @@
             const mm = String(today.getMonth() + 1).padStart(2, '0'); 
             const yyyy = today.getFullYear();
             const dateStr = `${dd}-${mm}-${yyyy}`; 
-            // ----------------------------------------
 
-          
             const kodeToko = document.getElementById('kode_toko').value;
             const safeKodeToko = kodeToko ? kodeToko.replace(/[^a-zA-Z0-9]/g, '_') : 'TANPA_KODE'; 
 
             const filename = `BA_VAR_${safeKodeToko}_${dateStr}.pdf`; 
 
-            // Konfigurasi html2pdf
-            const opt = {
             
+            const opt = {
                 margin: [5, 10, 10, 10], 
                 filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 4.0 }, 
+                html2canvas: { scale: 4.0, scrollY: 0 }, // scrollY: 0 untuk menghindari teks di tengah
                 jsPDF: { unit: 'mm', format: [210, 297], orientation: 'portrait' }
             };
 
             try {
-                // Konversi HTML ke Blob PDF
                 const pdfBlob = await html2pdf().set(opt).from(element).outputPdf('blob');
                 
-                // Cek dukungan Web Share API
                 if (navigator.canShare && navigator.canShare({ files: [new File([pdfBlob], filename, { type: 'application/pdf' })] })) {
-                    
                     const file = new File([pdfBlob], filename, { type: 'application/pdf' });
-                    
-                    // Panggil dialog berbagi OS
                     await navigator.share({
                         files: [file],
                         title: 'Berita Acara Sales Variance',
                         text: 'Terlampir adalah Berita Acara yang telah ditandatangani secara digital.',
                     });
-                    
                 } else {
-                    // Fallback: Unduh file
                     alert('Browser tidak mendukung fitur berbagi langsung. File akan diunduh.');
                     
                     const url = URL.createObjectURL(pdfBlob);
@@ -507,13 +486,16 @@
                 console.error('Proses Ekspor/Berbagi gagal:', error);
                 alert('Gagal membuat atau berbagi PDF.');
             } finally {
-                // 4. Kembalikan Input Nilai Sales setelah selesai
-                if (parentParagraph) {
-                    parentParagraph.innerHTML = `senilai : Rp. <input type="text" id="nilai_sales" placeholder="Contoh: 100.000" onkeyup="formatAngka(this)" style="width: 150px;">`;
+               
+                if (parentParagraphNilai && originalNilaiHTML) {
+                    parentParagraphNilai.innerHTML = originalNilaiHTML;
                     document.getElementById('nilai_sales').value = nilaiSalesFormatted;
                 }
+
                 
-                // 5. Reset tampilan setelah proses selesai
+                tglInput.style.display = 'inline-block';
+                tglSpan.style.display = 'none';
+                
                 prepareForExport('done');
             }
         }
@@ -543,5 +525,3 @@
     </script>
 </body>
 </html>
-
-
