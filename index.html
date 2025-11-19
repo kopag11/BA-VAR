@@ -170,7 +170,14 @@
             font-size: 0.7em;
             color: #666;
         }
-        
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                min-height: auto;
+                margin: 0;
+                padding: 15px;
+                box-shadow: none;
+                
         .hide-on-export {
             display: none !important;
         }
@@ -221,17 +228,14 @@
                                       style="width: 150px;">
             <p>
                 tanggal varian
-                <input type="text" 
-                       placeholder="DD-MM-YYYY" 
-                       id="tanggal_kejadian" 
-                       oninput="formatTanggal(this)"
-                       maxlength="10"
-                       style="width: 120px;"> 
+               <input type="date" id="tgl_kejadian" class="inline-input" style="width: auto;">
+                <span class="print-value" id="pv_tgl_kejadian"></span>
             </p>
             <p>
                 Dengan kronologi sbb :
             </p>
-            <textarea placeholder="Tuliskan kronologi kejadian di sini..." id="kronologi"></textarea>
+           <textarea id="kronologi" placeholder="Tuliskan kronologi..."></textarea>
+            <div class="print-value" id="pv_kronologi" style="border: 1px solid #000; padding: 10px; min-height: 80px; white-space: pre-wrap;"></div>
         </div>
 
         <div class="penutup-section">
@@ -285,7 +289,9 @@
 
     <script>
         
-      
+      const today = new Date();
+        document.getElementById('tgl_buat').innerText = `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
+        
         function onlyNumbers(input) {
             
             input.value = input.value.replace(/[^0-9]/g, '');
@@ -464,7 +470,7 @@
                 margin: [5, 10, 10, 10], 
                 filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 3.0 }, 
+                html2canvas: { scale: 4.0 }, 
                 jsPDF: { unit: 'mm', format: [210, 297], orientation: 'portrait' }
             };
 
@@ -537,4 +543,5 @@
     </script>
 </body>
 </html>
+
 
