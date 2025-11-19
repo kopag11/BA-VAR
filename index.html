@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
-        /* CSS Umum */
+        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -17,7 +17,6 @@
         }
 
         .container {
-            
             width: 180mm; 
             margin: 0 auto;
             padding: 0; 
@@ -36,7 +35,7 @@
             padding-right: 20px;
         }
         
-       
+     
         .data-input, .keterangan-section, .penutup-section, .tanda-tangan, .credit-text {
             padding-left: 20px;
             padding-right: 20px;
@@ -64,11 +63,22 @@
             margin-top: 20px;
             line-height: 1.5;
         }
+        
+ 
+        #nilai_sales, #tanggal_kejadian {
+            font-size: 1.1em; 
+            font-weight: bold; 
+        }
+        
+      
+        #nama_personil, #jabatan, #kode_toko {
+            text-transform: uppercase;
+        }
+        
         .keterangan-section input[type="text"] {
             border: none;
-            border-bottom: 1px solid #000; /* Garis bawah input tanggal */
+            border-bottom: 1px solid #000; 
             padding: 2px 5px;
-            width: 100px;
             display: inline-block;
         }
         textarea {
@@ -118,7 +128,6 @@
             display: none; 
             width: 100%;
             height: 80px;
-            /* GARIS DIKEMBALIKAN */
             border: 1px solid #000; 
             object-fit: contain; 
         }
@@ -165,6 +174,15 @@
         .hide-on-export {
             display: none !important;
         }
+        
+       
+        .nilai-sales-temp {
+            font-size: 1.1em;
+            font-weight: bold;
+            display: inline-block;
+            padding: 2px 5px;
+            border-bottom: 1px solid #000;
+        }
     </style>
 </head>
 <body>
@@ -177,29 +195,39 @@
 
         <div class="data-input">
             <label for="kode_toko">KODE TOKO</label>
-            <input type="text" id="kode_toko">
+            <input type="text" id="kode_toko" maxlength="4">
         </div>
         <div class="data-input">
             <label for="nama_personil">NAMA PERSONIL</label>
-            <input type="text" id="nama_personil">
+            <input type="text" id="nama_personil" oninput="toUppercase(this)">
         </div>
         <div class="data-input">
             <label for="nik">NIK</label>
-            <input type="text" id="nik">
+            <input type="text" id="nik" oninput="onlyNumbers(this)">
         </div>
         <div class="data-input">
             <label for="jabatan">JABATAN</label>
-            <input type="text" id="jabatan">
+            <input type="text" id="jabatan" oninput="toUppercase(this)">
         </div>
 
         <div class="keterangan-section">
             <p>
                 Menerangkan potong sales Variance Plus / Lebih Setor fisik
             <p>
-                senilai : Rp. <input type="text" placeholder="beri tanda titik kelipatan ribuan"; font-size: 16px;**">
+                senilai : Rp. <input type="text" 
+                                      id="nilai_sales" 
+                                      placeholder="otomatis titik"
+                                      onkeyup="formatAngka(this)" 
+                                      style="width: 150px;">
             <p>
-                tanggal sales
-                <input type="text" placeholder="DD-MM-YYYY" id="tanggal_kejadian" style="width: 100px; font-size: 16px;**"> </p>
+                tanggal varian
+                <input type="text" 
+                       placeholder="DD-MM-YYYY" 
+                       id="tanggal_kejadian" 
+                       oninput="formatTanggal(this)"
+                       maxlength="10"
+                       style="width: 120px;"> 
+            </p>
             <p>
                 Dengan kronologi sbb :
             </p>
@@ -214,9 +242,7 @@
 
         <div class="tanda-tangan">
             <div class="ttd-box" style="margin-left: auto; text-align: right; width: 25%;">
-                <div class="tempat">Sidoarjo, <input type="text" id="tempat_dibuat" style="width: 80px; border: none; border-bottom: 1px solid #000; display: inline-
-
-block;"></div>
+                <div class="tempat">Sidoarjo, <input type="text" id="tempat_dibuat" style="width: 80px; border: none; border-bottom: 1px solid #000; display: inline-block;"></div>
                 <p>Dibuat</p>
                 <canvas id="signature-personil" class="ttd-area"></canvas>
                 <img class="ttd-image" alt="Tanda Tangan Personil Toko">
@@ -259,12 +285,55 @@ block;"></div>
 
     <script>
         
+      
+        function onlyNumbers(input) {
+            
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+ 
+        function toUppercase(input) {
+ 
+            input.value = input.value.toUpperCase();
+        }
+
+    
+        function formatTanggal(input) {
+            let value = input.value;
+            
+          
+            value = value.replace(/[^0-9-]/g, ''); 
+            
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+
+          
+            if (value.length > 2 && value.charAt(2) !== '-') {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            
+            if (value.length > 5 && value.charAt(5) !== '-') {
+                value = value.substring(0, 5) + '-' + value.substring(5);
+            }
+            
+            input.value = value;
+        }
+
+      
+        function formatAngka(input) {
+            let angka = input.value.replace(/[^0-9]/g, '');
+            let formatted = angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            input.value = formatted;
+        }
+
         const canvases = document.querySelectorAll('.ttd-area');
         const ttdImages = document.querySelectorAll('.ttd-image');
         const controls = document.querySelectorAll('.ttd-controls');
 
     
         function initSignaturePad(canvas) {
+            // ... (Kode inisialisasi tanda tangan tidak berubah) ...
             const ctx = canvas.getContext('2d');
             let isDrawing = false;
             let lastX = 0;
@@ -359,8 +428,18 @@ block;"></div>
         }
         
       
-
+     
         async function sharePDF() {
+       
+            const nilaiInput = document.getElementById('nilai_sales');
+            const nilaiSalesFormatted = nilaiInput.value;
+            const parentParagraph = nilaiInput.closest('p');
+            
+            if (parentParagraph) {
+                 parentParagraph.innerHTML = `senilai : Rp. <span class="nilai-sales-temp">${nilaiSalesFormatted}</span>`;
+            }
+
+          
             prepareForExport('exporting');
             
             const element = document.querySelector('.container');
@@ -422,7 +501,13 @@ block;"></div>
                 console.error('Proses Ekspor/Berbagi gagal:', error);
                 alert('Gagal membuat atau berbagi PDF.');
             } finally {
-                // Reset tampilan setelah proses selesai
+                // 4. Kembalikan Input Nilai Sales setelah selesai
+                if (parentParagraph) {
+                    parentParagraph.innerHTML = `senilai : Rp. <input type="text" id="nilai_sales" placeholder="Contoh: 100.000" onkeyup="formatAngka(this)" style="width: 150px;">`;
+                    document.getElementById('nilai_sales').value = nilaiSalesFormatted;
+                }
+                
+                // 5. Reset tampilan setelah proses selesai
                 prepareForExport('done');
             }
         }
@@ -452,17 +537,3 @@ block;"></div>
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
