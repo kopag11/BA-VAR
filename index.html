@@ -2,13 +2,12 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2.0">
-    <title>Berita Acara - Personil TTD & Bagikan PDF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita Acara - Sales Variance</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
-        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -17,30 +16,20 @@
         }
 
         .container {
-            width: 180mm; 
+            width: 190mm; 
             margin: 0 auto;
-            padding: 0; 
+            padding: 25px; 
             background-color: white;
-            border: none; 
-            box-shadow: none; 
+            box-sizing: border-box;
         }
 
-        
         h1.title {
             text-align: center;
-            margin-bottom: 20px; 
-            border-bottom: none; 
-            padding-bottom: 5px;
+            margin-bottom: 25px; 
             font-size: 1.5em;
-            margin-top: 10px;
+            text-decoration: underline;
+            font-weight: bold;
         }
-        
-        
-        .data-input, .keterangan-section, .penutup-section, .tanda-tangan, .credit-text, .image-upload-section {
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
         
         .data-input {
             margin-bottom: 8px; 
@@ -48,83 +37,67 @@
             align-items: center;
         }
         .data-input label {
-            width: 150px;
-            font-weight: normal;
+            width: 140px;
+            font-size: 0.9em;
         }
         .data-input input[type="text"] {
-            width: 200px;
+            width: 220px;
             border: none;
             border-bottom: 1px solid #000; 
             padding: 2px 5px;
             outline: none;
         }   
 
-        #kode_toko {
-            font-weight: bold;
-            font-size: 1.5em; 
-            width: 80px;
-        }
+        #kode_toko { font-weight: bold; font-size: 1.1em; width: 80px !important; }
 
-        
         .keterangan-section {
             margin-top: 15px;
-            line-height: 1.3; 
+            line-height: 1.4; 
+            font-size: 0.95em;
         }
         
-        #nilai_sales, #tanggal_kejadian {
-            font-size: 1.1em; 
-            font-weight: bold; 
-        }
+        #nilai_sales, #tanggal_kejadian { font-weight: bold; }
         
-        #nama_personil, #jabatan, #kode_toko {
-            text-transform: uppercase;
-        }
+        #nama_personil, #jabatan, #kode_toko { text-transform: uppercase; }
         
-        .keterangan-section input[type="text"],
-        .keterangan-section input[type="date"] {
+        .keterangan-section input {
             border: none;
             border-bottom: 1px solid #000; 
             padding: 2px 5px;
-            display: inline-block;
-            font-family: Arial, sans-serif;
             font-size: 1em;
-            width: 120px;
         }
         
         textarea {
             width: 100%;
-            height: 80px; 
+            height: 90px; 
             border: 1px solid #ccc; 
             padding: 10px;
-            resize: vertical;
-            margin-top: 5px;
+            margin-top: 10px;
             box-sizing: border-box;
-            background-color: #f7f7f7; 
+            font-family: Arial, sans-serif;
         }
 
         
-        .tanda-tangan {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px; 
+        .signature-main-grid {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr; 
+            gap: 30px 20px;
+        }
+
+        .sub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             text-align: center;
         }
-        .ttd-box {
-            width: 20%;
-            display: inline-block;
-        }
-        .ttd-box .tempat {
-            text-align: left;
-            font-size: 0.9em;
-        }
-        .ttd-controls {
-            margin-top: 5px;
-        }
-        .ttd-controls button {
-            padding: 5px 10px;
-            margin: 0 2px;
-            cursor: pointer;
-            font-size: 0.8em;
+
+        .ttd-single-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
         }
 
         .ttd-area {
@@ -133,520 +106,261 @@
             margin: 5px 0;
             cursor: crosshair;
             background-color: white; 
+            width: 140px;
         }
-        .ttd-box img.ttd-image {
+        
+        .ttd-image {
             display: none; 
-            width: 100%;
+            width: 140px;
             height: 70px;
+            margin: 5px 0;
             border: 1px solid #000; 
             object-fit: contain; 
         }
 
-        .no-border-on-export {
-            border: none !important;
-        }
-
         .ttd-line {
-            height: 60px; 
+            height: 55px; 
+            width: 130px;
             border-bottom: 1px solid #000; 
-            margin: 5px 0;
+            margin-bottom: 5px;
         }
 
-        .ttd-box p {
-            margin: 5px 0 0;
+        .ttd-label-top {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .ttd-label-bottom {
+            font-size: 0.8em;
             font-weight: bold;
-            font-size: 0.9em;
+            margin-top: 2px;
         }
 
-        
         .actions {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
+            top: 20px;
+            right: 20px;
             z-index: 100;
         }
         .actions button {
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
             background-color: #28a745; 
             color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         
         .credit-text {
             text-align: right;
             margin-top: 20px;
             font-size: 0.7em;
-            color: #666;
-            margin-bottom: 10px;
+            color: #999;
         }
         
-        .hide-on-export {
-            display: none !important;
-        }
+        .hide-on-export { display: none !important; }
         
-        .nilai-sales-temp {
-            font-size: 1.1em;
-            font-weight: bold;
-            display: inline-block;
-            padding: 2px 5px;
+        .print-text {
+            display: none;
             border-bottom: 1px solid #000;
+            font-weight: bold;
         }
 
-        
-        .image-upload-section {
-            margin-top: 0px; 
-            padding-top: 20px;
-            page-break-before: always; 
-        }
-        
-        .image-upload-section h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
-            margin-top: 0;
-        }
-        
-        #image_preview_container {
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 10px; 
-            justify-content: space-between; 
-            margin-top: 10px;
-        }
-        
-        .image-box {
-            width: 32%; 
-            box-sizing: border-box;
-            border: 1px solid #ccc; 
-            padding: 5px;
-            text-align: center;
-            margin-bottom: 10px; 
-        }
-        
-        .image-box img {
-            max-width: 100%;
-            height: auto;
-            max-height: 350px; 
-            display: block;
-            margin: 0 auto;
-        }
-        
-        
         @media print {
-            .image-upload-section input[type="file"],
-            .image-upload-section p:not(#image_preview_container p) {
-                display: none !important;
-            }
+            .actions { display: none; }
         }
     </style>
 </head>
 <body>
+
     <div class="actions">
-        <button onclick="sharePDF()">Bagikan Langsung PDF</button>
+        <button onclick="sharePDF()">Bagikan Ke WhatsApp (PDF)</button>
     </div>
 
-    <div class="container">
-        <h1 class="title">BERITA ACARA</h1>
+    <div class="container" id="pdf-content">
+        <h1 class="title">BERITA ACARA SALES VARIANCE</h1>
 
         <div class="data-input">
-            <label for="kode_toko">KODE TOKO</label>
+            <label>KODE TOKO</label>
             <input type="text" id="kode_toko" maxlength="4" oninput="toUppercase(this)">
         </div>
         <div class="data-input">
-            <label for="nama_personil">NAMA PERSONIL</label>
+            <label>NAMA PERSONIL</label>
             <input type="text" id="nama_personil" oninput="toUppercase(this)">
         </div>
         <div class="data-input">
-            <label for="nik">NIK</label>
+            <label>NIK</label>
             <input type="text" id="nik" oninput="onlyNumbers(this)">
         </div>
         <div class="data-input">
-            <label for="jabatan">JABATAN</label>
+            <label>JABATAN</label>
             <input type="text" id="jabatan" oninput="toUppercase(this)">
         </div>
 
         <div class="keterangan-section">
             <p>
-                Menerangkan potong sales Variance Plus 
-            <p>
-                senilai : Rp. <input type="text" 
-                                      id="nilai_sales" 
-                                      placeholder="..."
-                                      onkeyup="formatAngka(this)" 
-                                      style="width: 150px;">
-            <p>
-                tanggal varian
-                <input type="date" 
-                       id="tanggal_kejadian"> 
-                <span id="tanggal_kejadian_print" class="nilai-sales-temp" style="display:none; width: 120px; text-align: center;"></span>
+                Menerangkan pengajuan potong sales Variance Plus senilai: 
+                <strong>Rp. </strong><input type="text" id="nilai_sales" placeholder="..." onkeyup="formatAngka(this)" style="width: 150px;">
+                <span id="nilai_sales_print" class="print-text"></span>
             </p>
             <p>
-                Dengan kronologi sbb :
+                Tanggal kejadian: 
+                <input type="date" id="tanggal_kejadian"> 
+                <span id="tanggal_kejadian_print" class="print-text"></span>
             </p>
-            <textarea placeholder="Tuliskan kronologi kejadian di sini..." id="kronologi"></textarea>
-            <div id="kronologi_print" style="display:none; white-space: pre-wrap; padding: 10px; min-height: 80px; border: none; background: none;"></div>
+            <p>Dengan kronologi sebagai berikut:</p>
+            <textarea id="kronologi" placeholder="Tuliskan kronologi di sini..."></textarea>
+            <div id="kronologi_print" class="print-text" style="white-space: pre-wrap; min-height: 80px; width: 100%; border: 1px solid #eee; display:none; padding: 10px;"></div>
         </div>
 
-        <div class="penutup-section">
-            <p>
-                Demikian berita acara ini saya buat dengan sebenar benarnya, Terima kasih
-            </p>
-        </div>
+        <p style="margin-top: 15px; font-size: 0.9em;">Demikian berita acara ini saya buat dengan sebenar-benarnya. Terima kasih.</p>
 
-        <div class="tanda-tangan">
-            <div class="ttd-box" style="margin-left: auto; text-align: right; width: 25%;">
-                <div class="tempat">Sidoarjo, <input type="text" id="tempat_dibuat" style="width: 80px; border: none; border-bottom: 1px solid #000; display: inline-block;"></div>
-                <p>Dibuat</p>
-                <canvas id="signature-personil" class="ttd-area"></canvas>
-                <img class="ttd-image" alt="Tanda Tangan Personil Toko">
-                <div class="ttd-controls">
-                    <button onclick="clearCanvas('signature-personil')">Hapus TTD</button>
+        <div class="signature-main-grid">
+            
+            <div class="ttd-single-box">
+                <span class="ttd-label-top">Sidoarjo, <span id="tgl_skrg"></span></span>
+                <span class="ttd-label-top" style="font-weight: bold;">Pembuat,</span>
+                <canvas id="sig-canvas" class="ttd-area"></canvas>
+                <img id="sig-image" class="ttd-image">
+                <div class="hide-on-export">
+                    <button onclick="clearSig()" style="font-size: 9px; cursor:pointer;">Hapus TTD</button>
                 </div>
-                <p><span id="personil_ttd_name">(Personil toko)</span></p> 
-            </div>
-        </div>
-
-        <div class="tanda-tangan" style="margin-top: 30px;">
-            <div class="ttd-box">
-                <p>Disetujui</p>
-                <div class="ttd-line"></div>
-                <p>(Area Supervisor)</p>
+                <span class="ttd-label-bottom">( <span id="display_nama">TIM TOKO</span> )</span>
             </div>
 
-            <div class="ttd-box">
-                <p>Diketahui</p>
-                <div class="ttd-line"></div>
-                <p>(Area Manager)</p>
-            </div>
-
-            <div class="ttd-box">
-                <p>Diketahui</p>
-                <div class="ttd-line"></div>
-                <p>(DBM Adm/Opr)</p>
-            </div>
-
-            <div class="ttd-box">
-                <p>Diketahui</p>
-                <div class="ttd-line"></div>
-                <p>(Office Manager)</p>
-            </div>
-        </div>
-        
-        <div class="image-upload-section">
-            <h2>LAMPIRAN SLIP TUTUPAN</h2>
-            
-            <p id="upload_instruction">Silakan unggah gambar pendukung di sini (maksimum 3 gambar).</p>
-            
-            <input type="file" id="image_upload" accept="image/*" multiple onchange="previewImages()">
-            
-            <div id="image_preview_container">
+            <div class="sub-grid">
+                <div class="ttd-single-box">
+                    <span class="ttd-label-top">Diketahui,</span>
+                    <div class="ttd-line"></div>
+                    <span class="ttd-label-bottom">(Area Supervisor)</span>
                 </div>
-        </div>
-        <div class="credit-text">Credit by kopi hitam</div>
+                <div class="ttd-single-box">
+                    <span class="ttd-label-top">Diketahui,</span>
+                    <div class="ttd-line"></div>
+                    <span class="ttd-label-bottom">(Area Manager)</span>
+                </div>
+            </div>
+            
+            <div class="sub-grid">
+                <div class="ttd-single-box">
+                    <span class="ttd-label-top">Pemeriksa,</span>
+                    <div class="ttd-line"></div>
+                    <span class="ttd-label-bottom">(EDP Manager)</span>
+                </div>
+                <div class="ttd-single-box">
+                    <span class="ttd-label-top">Pemeriksa,</span>
+                    <div class="ttd-line"></div>
+                    <span class="ttd-label-bottom">(Office Manager)</span>
+                </div>
+            </div>
 
+            <div class="ttd-single-box">
+                <span class="ttd-label-top">Menyetujui,</span>
+                <div class="ttd-line" style="width: 160px;"></div>
+                <span class="ttd-label-bottom">(DBM OPR / BM)</span>
+            </div>
+
+        </div>
+
+        <div class="credit-text">Print File</div>
     </div>
 
     <script>
-        
-        function onlyNumbers(input) {
-            input.value = input.value.replace(/[^0-9]/g, '');
-        }
-
-        function toUppercase(input) {
-            input.value = input.value.toUpperCase();
-        }
-        
+        function onlyNumbers(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
+        function toUppercase(input) { input.value = input.value.toUpperCase(); }
         function formatAngka(input) {
-            let angka = input.value.replace(/[^0-9]/g, '');
-            let formatted = angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            input.value = formatted;
+            let val = input.value.replace(/[^0-9]/g, '');
+            input.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         
-        const canvases = document.querySelectorAll('.ttd-area');
-        const ttdImages = document.querySelectorAll('.ttd-image');
-        const controls = document.querySelectorAll('.ttd-controls');
+        const canvas = document.getElementById('sig-canvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
 
-        function initSignaturePad(canvas) {
-            const ctx = canvas.getContext('2d');
-            let isDrawing = false;
-            let lastX = 0;
-            let lastY = 0;
+        canvas.width = 140;
+        canvas.height = 70;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
 
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            ctx.strokeStyle = '#000000';
-            ctx.lineJoin = 'round';
-            ctx.lineCap = 'round';
-            ctx.lineWidth = 3;
-
-            function draw(e) {
-                if (!isDrawing) return;
-                
-                let clientX, clientY;
-                if (e.touches && e.touches.length > 0) {
-                    clientX = e.touches[0].clientX;
-                    clientY = e.touches[0].clientY;
-                } else {
-                    clientX = e.clientX;
-                    clientY = e.clientY;
-                }
-
-                const rect = canvas.getBoundingClientRect();
-                const currentX = clientX - rect.left;
-                const currentY = clientY - rect.top;
-
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(currentX, currentY);
-                ctx.stroke();
-
-                lastX = currentX;
-                lastY = currentY;
-                e.preventDefault();
-            }
-
-            canvas.addEventListener('mousedown', (e) => {
-                isDrawing = true;
-                const rect = canvas.getBoundingClientRect();
-                lastX = e.clientX - rect.left;
-                lastY = e.clientY - rect.top;
-            });
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', () => isDrawing = false);
-            canvas.addEventListener('mouseout', () => isDrawing = false);
-            canvas.addEventListener('touchstart', (e) => {
-                isDrawing = true;
-                const rect = canvas.getBoundingClientRect();
-                lastX = e.touches[0].clientX - rect.left;
-                lastY = e.touches[0].clientY - rect.top;
-                e.preventDefault();
-            });
-            canvas.addEventListener('touchmove', draw);
-            canvas.addEventListener('touchend', () => isDrawing = false);
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
         }
 
-        canvases.forEach(initSignaturePad);
+        canvas.addEventListener('mousedown', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+        canvas.addEventListener('mousemove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); });
+        window.addEventListener('mouseup', () => drawing = false);
+        canvas.addEventListener('touchstart', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); });
+        canvas.addEventListener('touchmove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); });
 
-        function clearCanvas(canvasId) {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-        }
-
-        
-        function previewImages() {
-            const previewContainer = document.getElementById('image_preview_container');
-            const files = document.getElementById('image_upload').files;
-            
-            if (files.length > 3) {
-                alert('Maksimum 3 gambar yang diizinkan.');
-                document.getElementById('image_upload').value = ''; 
-                previewContainer.innerHTML = '';
-                return;
-            }
-
-            previewContainer.innerHTML = ''; 
-
-            Array.from(files).forEach(file => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        const box = document.createElement('div');
-                        box.className = 'image-box';
-                        
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = 'Lampiran Gambar';
-                        
-                        box.appendChild(img);
-                        previewContainer.appendChild(box);
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-
-        //SEPTA GANTENG
-        function prepareForExport(state) {
-            canvases.forEach((canvas, index) => {
-                const img = ttdImages[index];
-                if (state === 'exporting') {
-                    if (canvas.toDataURL('image/png').length > 1000) { 
-                        img.src = canvas.toDataURL('image/png');
-                        img.style.display = 'block'; 
-                        canvas.style.display = 'none';
-                        canvas.classList.add('no-border-on-export');
-                        img.classList.add('no-border-on-export');
-                    } else {
-                        canvas.classList.add('no-border-on-export');
-                    }
-                    
-                    controls.forEach(el => el.classList.add('hide-on-export'));
-                    document.querySelector('.actions').classList.add('hide-on-export');
-
-                } else if (state === 'done') {
-                    canvas.style.display = 'block';
-                    img.style.display = 'none';
-                    controls.forEach(el => el.classList.remove('hide-on-export'));
-                    document.querySelector('.actions').classList.remove('hide-on-export');
-                    canvas.classList.remove('no-border-on-export');
-                    img.classList.remove('no-border-on-export');
-                }
-            });
-        }
+        function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
         async function sharePDF() {
-            window.scrollTo(0,0);
+            const nameInput = document.getElementById('nama_personil').value;
+            const kodeToko = document.getElementById('kode_toko').value || 'TOKO';
 
             
-            const fileInput = document.getElementById('image_upload');
-            const instructionText = document.getElementById('upload_instruction');
-            fileInput.style.display = 'none';
-            if(instructionText) instructionText.style.display = 'none';
+            document.getElementById('nilai_sales_print').innerText = document.getElementById('nilai_sales').value;
+            document.getElementById('nilai_sales').style.display = 'none';
+            document.getElementById('nilai_sales_print').style.display = 'inline';
 
-            
-            const nilaiInput = document.getElementById('nilai_sales');
-            const nilaiSalesFormatted = nilaiInput.value;
-            const parentParagraphNilai = nilaiInput.closest('p');
-            const originalNilaiHTML = parentParagraphNilai ? parentParagraphNilai.innerHTML : null;
-            if (parentParagraphNilai) {
-                 parentParagraphNilai.innerHTML = `senilai : Rp. <span class="nilai-sales-temp">${nilaiSalesFormatted}</span>`;
-            }
+            document.getElementById('kronologi_print').innerText = document.getElementById('kronologi').value;
+            document.getElementById('kronologi').style.display = 'none';
+            document.getElementById('kronologi_print').style.display = 'block';
 
-            
-            const tglInput = document.getElementById('tanggal_kejadian');
-            const tglSpan = document.getElementById('tanggal_kejadian_print');
-            let tglFormatted = '';
-            if(tglInput.value) {
-                const dateParts = tglInput.value.split('-');
-                if(dateParts.length === 3) {
-                    tglFormatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-                }
-            }
-            tglSpan.innerText = tglFormatted;
-            tglInput.style.display = 'none';
-            tglSpan.style.display = 'inline-block';
+            const tglVal = document.getElementById('tanggal_kejadian').value;
+            document.getElementById('tanggal_kejadian_print').innerText = tglVal ? tglVal.split('-').reverse().join('-') : '-';
+            document.getElementById('tanggal_kejadian').style.display = 'none';
+            document.getElementById('tanggal_kejadian_print').style.display = 'inline';
 
-            
-            const kronologiInput = document.getElementById('kronologi');
-            const kronologiPrint = document.getElementById('kronologi_print');
-            kronologiPrint.innerText = kronologiInput.value; 
-            kronologiInput.style.display = 'none'; 
-            kronologiPrint.style.display = 'block'; 
-            
-            
-            const jabatanInput = document.getElementById('jabatan');
-            const ttdLabelSpan = document.getElementById('personil_ttd_name');
-            const originalTtdName = ttdLabelSpan.innerHTML; 
-            if (jabatanInput.value) {
-                ttdLabelSpan.innerText = `(${jabatanInput.value})`;
-            } else {
-                ttdLabelSpan.innerText = '(................................)';
-            }
+            if(nameInput) document.getElementById('display_nama').innerText = nameInput;
 
+            const sigImg = document.getElementById('sig-image');
+            sigImg.src = canvas.toDataURL();
+            sigImg.style.display = 'block';
+            canvas.style.display = 'none';
             
-            prepareForExport('exporting');
-            
-            
-            const element = document.querySelector('.container');
-            
-            const today = new Date();
-            const dd = String(today.getDate()).padStart(2, '0');
-            const mm = String(today.getMonth() + 1).padStart(2, '0'); 
-            const yyyy = today.getFullYear();
-            const dateStr = `${dd}-${mm}-${yyyy}`; 
+            document.querySelectorAll('.hide-on-export').forEach(el => el.style.display = 'none');
 
-            const kodeToko = document.getElementById('kode_toko').value;
-            const safeKodeToko = kodeToko ? kodeToko.replace(/[^a-zA-Z0-9]/g, '_') : 'TANPA_KODE'; 
-            const filename = `BA_VAR_${safeKodeToko}_${dateStr}.pdf`; 
+            const element = document.getElementById('pdf-content');
+            const filename = `BA_VAR_${kodeToko}.pdf`;
 
             const opt = {
-                margin: [5, 10, 10, 10], 
+                margin: [10, 5, 10, 5],
                 filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 4.0, scrollY: 0 }, 
-                jsPDF: { unit: 'mm', format: [210, 297], orientation: 'portrait' }
+                html2canvas: { scale: 3, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            
             try {
                 const pdfBlob = await html2pdf().set(opt).from(element).outputPdf('blob');
-                
-                if (navigator.canShare && navigator.canShare({ files: [new File([pdfBlob], filename, { type: 'application/pdf' })] })) {
-                    const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+                const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         files: [file],
                         title: 'Berita Acara Sales Variance',
-                        text: 'Terlampir adalah Berita Acara yang telah ditandatangani secara digital.',
                     });
                 } else {
-                    alert('Browser tidak mendukung fitur berbagi langsung. File akan diunduh.');
-                    const url = URL.createObjectURL(pdfBlob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    html2pdf().set(opt).from(element).save();
                 }
-            } catch (error) {
-                console.error('Proses Ekspor/Berbagi gagal:', error);
-                alert('Gagal membuat atau berbagi PDF.');
+            } catch (err) {
+                alert("Proses PDF terganggu");
             } finally {
-                
-                
-                
-                fileInput.style.display = 'block';
-                if(instructionText) instructionText.style.display = 'block';
-
-                
-                if (parentParagraphNilai && originalNilaiHTML) {
-                    parentParagraphNilai.innerHTML = originalNilaiHTML;
-                    document.getElementById('nilai_sales').value = nilaiSalesFormatted;
-                }
-
-                
-                tglInput.style.display = 'inline-block';
-                tglSpan.style.display = 'none';
-                
-                
-                kronologiInput.style.display = 'block';
-                kronologiPrint.style.display = 'none';
-                
-                
-                ttdLabelSpan.innerHTML = originalTtdName;
-
-                prepareForExport('done');
-            }
-        }
-      
-        function setCreationDate() {
-            const dateInput = document.getElementById('tempat_dibuat');
-            const today = new Date();
-            const dd = String(today.getDate()).padStart(2, '0');
-            const mm = String(today.getMonth() + 1).padStart(2, '0'); 
-            const yyyy = today.getFullYear();
-            const formattedDate = `${dd}-${mm}-${yyyy}`;
-
-            if (dateInput) {
-                dateInput.value = formattedDate;
-                dateInput.readOnly = true;
+                setTimeout(() => { location.reload(); }, 1500); 
             }
         }
 
-        setCreationDate();
+        const now = new Date();
+        document.getElementById('tgl_skrg').innerText = `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`;
     </script>
 </body>
 </html>
