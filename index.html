@@ -77,11 +77,11 @@
             font-family: Arial, sans-serif;
         }
 
-        
+        /* --- TANDA TANGAN SECTION --- */
         .signature-main-grid {
             margin-top: 30px;
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr; 
+            grid-template-columns: 1.2fr 0.8fr; /* Sisi kiri lebih lebar untuk menampung 2 kolom */
             gap: 30px 20px;
         }
 
@@ -202,7 +202,7 @@
 
         <div class="keterangan-section">
             <p>
-                Menerangkan pengajuan potong sales Variance Plus senilai: 
+                Menerangkan potong sales Variance Plus senilai: 
                 <strong>Rp. </strong><input type="text" id="nilai_sales" placeholder="..." onkeyup="formatAngka(this)" style="width: 150px;">
                 <span id="nilai_sales_print" class="print-text"></span>
             </p>
@@ -220,17 +220,6 @@
 
         <div class="signature-main-grid">
             
-            <div class="ttd-single-box">
-                <span class="ttd-label-top">Sidoarjo, <span id="tgl_skrg"></span></span>
-                <span class="ttd-label-top" style="font-weight: bold;">Pembuat,</span>
-                <canvas id="sig-canvas" class="ttd-area"></canvas>
-                <img id="sig-image" class="ttd-image">
-                <div class="hide-on-export">
-                    <button onclick="clearSig()" style="font-size: 9px; cursor:pointer;">Hapus TTD</button>
-                </div>
-                <span class="ttd-label-bottom">( <span id="display_nama">TIM TOKO</span> )</span>
-            </div>
-
             <div class="sub-grid">
                 <div class="ttd-single-box">
                     <span class="ttd-label-top">Diketahui,</span>
@@ -243,7 +232,18 @@
                     <span class="ttd-label-bottom">(Area Manager)</span>
                 </div>
             </div>
-            
+
+            <div class="ttd-single-box">
+                <span class="ttd-label-top">Sidoarjo, <span id="tgl_skrg"></span></span>
+                <span class="ttd-label-top" style="font-weight: bold;">Pembuat,</span>
+                <canvas id="sig-canvas" class="ttd-area"></canvas>
+                <img id="sig-image" class="ttd-image">
+                <div class="hide-on-export">
+                    <button onclick="clearSig()" style="font-size: 9px; cursor:pointer;">Hapus TTD</button>
+                </div>
+                <span class="ttd-label-bottom">( <span id="display_nama">TIM TOKO</span> )</span>
+            </div>
+
             <div class="sub-grid">
                 <div class="ttd-single-box">
                     <span class="ttd-label-top">Pemeriksa,</span>
@@ -265,7 +265,7 @@
 
         </div>
 
-        <div class="credit-text">Print File</div>
+        <div class="credit-text">Print File di admin area</div>
     </div>
 
     <script>
@@ -276,7 +276,7 @@
             input.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        
+        // TTD Digital Logic
         const canvas = document.getElementById('sig-canvas');
         const ctx = canvas.getContext('2d');
         let drawing = false;
@@ -306,7 +306,7 @@
             const nameInput = document.getElementById('nama_personil').value;
             const kodeToko = document.getElementById('kode_toko').value || 'TOKO';
 
-            
+            // Swap Input to Text for PDF
             document.getElementById('nilai_sales_print').innerText = document.getElementById('nilai_sales').value;
             document.getElementById('nilai_sales').style.display = 'none';
             document.getElementById('nilai_sales_print').style.display = 'inline';
