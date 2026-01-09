@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Acara - Sales Variance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>Berita Acara Varian</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
@@ -16,51 +17,48 @@
         }
 
         .container {
-            width: 190mm; 
+            width: 180mm; 
             margin: 0 auto;
-            padding: 25px; 
             background-color: white;
-            box-sizing: border-box;
+            padding: 0;
         }
 
         h1.title {
             text-align: center;
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
             font-size: 1.5em;
-            text-decoration: underline;
-            font-weight: bold;
+            margin-top: 10px;
         }
         
+        .data-input, .keterangan-section, .penutup-section, .ttd-grid, .credit-text, .image-upload-section {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
         .data-input {
             margin-bottom: 8px; 
             display: flex;
             align-items: center;
         }
-        .data-input label {
-            width: 140px;
-            font-size: 0.9em;
-        }
+        .data-input label { width: 150px; }
         .data-input input[type="text"] {
-            width: 220px;
+            width: 200px;
             border: none;
             border-bottom: 1px solid #000; 
             padding: 2px 5px;
             outline: none;
         }   
 
-        #kode_toko { font-weight: bold; font-size: 1.1em; width: 80px !important; }
+        #kode_toko { font-weight: bold; font-size: 1.5em; width: 80px; }
 
-        .keterangan-section {
-            margin-top: 15px;
-            line-height: 1.4; 
-            font-size: 0.95em;
-        }
+        .keterangan-section { margin-top: 15px; line-height: 1.3; }
         
-        #nilai_sales, #tanggal_kejadian { font-weight: bold; }
+        #nilai_sales, #tanggal_kejadian { font-size: 1.1em; font-weight: bold; }
         
         #nama_personil, #jabatan, #kode_toko { text-transform: uppercase; }
         
-        .keterangan-section input {
+        .keterangan-section input[type="text"],
+        .keterangan-section input[type="date"] {
             border: none;
             border-bottom: 1px solid #000; 
             padding: 2px 5px;
@@ -69,298 +67,330 @@
         
         textarea {
             width: 100%;
-            height: 90px; 
+            height: 80px; 
             border: 1px solid #ccc; 
             padding: 10px;
-            margin-top: 10px;
+            resize: vertical;
+            margin-top: 5px;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            background-color: #f7f7f7; 
         }
 
-        /* --- TANDA TANGAN SECTION --- */
-        .signature-main-grid {
+        
+        .ttd-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px 10px;
             margin-top: 30px;
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr; /* Sisi kiri lebih lebar untuk menampung 2 kolom */
-            gap: 30px 20px;
-        }
-
-        .sub-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
             text-align: center;
         }
 
-        .ttd-single-box {
-            text-align: center;
+        .ttd-box {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: flex-end;
+            min-height: 140px;
         }
 
         .ttd-area {
-            height: 70px; 
+            height: 75px; 
             border: 1px solid #000; 
             margin: 5px 0;
             cursor: crosshair;
             background-color: white; 
-            width: 140px;
         }
-        
+
         .ttd-image {
             display: none; 
-            width: 140px;
-            height: 70px;
-            margin: 5px 0;
+            width: 100%;
+            height: 75px;
             border: 1px solid #000; 
             object-fit: contain; 
         }
 
         .ttd-line {
-            height: 55px; 
-            width: 130px;
+            height: 60px; 
             border-bottom: 1px solid #000; 
-            margin-bottom: 5px;
+            margin: 5px 0;
         }
 
-        .ttd-label-top {
-            font-size: 0.85em;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
-
-        .ttd-label-bottom {
-            font-size: 0.8em;
+        .ttd-box p {
+            margin: 5px 0 0;
             font-weight: bold;
-            margin-top: 2px;
+            font-size: 0.8em;
+        }
+
+        .ttd-controls { margin-top: 5px; }
+        .ttd-controls button {
+            padding: 5px 12px;
+            cursor: pointer;
+            font-size: 0.75em;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
         }
 
         .actions {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             z-index: 100;
         }
         .actions button {
             padding: 10px 20px;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
-            border: none;
-            border-radius: 5px;
             background-color: #28a745; 
             color: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: none;
+            border-radius: 5px;
         }
         
         .credit-text {
             text-align: right;
             margin-top: 20px;
             font-size: 0.7em;
-            color: #999;
+            color: #666;
+            margin-bottom: 20px;
         }
         
         .hide-on-export { display: none !important; }
+        .no-border-export { border: none !important; }
+
         
-        .print-text {
-            display: none;
-            border-bottom: 1px solid #000;
-            font-weight: bold;
+        .image-page-break {
+            page-break-before: always;
+            padding: 40px 20px;
+            text-align: center;
         }
 
-        @media print {
-            .actions { display: none; }
+        .image-page-break h2 {
+            font-size: 1.3em;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .image-box img {
+            max-width: 100%;
+            max-height: 800px;
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
-
     <div class="actions">
-        <button onclick="sharePDF()">Bagikan Ke WhatsApp (PDF)</button>
+        <button onclick="sharePDF()">Bagikan PDF</button>
     </div>
 
     <div class="container" id="pdf-content">
-        <h1 class="title">BERITA ACARA SALES VARIANCE</h1>
+        <div id="page1">
+            <h1 class="title">BERITA ACARA</h1>
 
-        <div class="data-input">
-            <label>KODE TOKO</label>
-            <input type="text" id="kode_toko" maxlength="4" oninput="toUppercase(this)">
-        </div>
-        <div class="data-input">
-            <label>NAMA PERSONIL</label>
-            <input type="text" id="nama_personil" oninput="toUppercase(this)">
-        </div>
-        <div class="data-input">
-            <label>NIK</label>
-            <input type="text" id="nik" oninput="onlyNumbers(this)">
-        </div>
-        <div class="data-input">
-            <label>JABATAN</label>
-            <input type="text" id="jabatan" oninput="toUppercase(this)">
-        </div>
+            <div class="data-input">
+                <label>KODE TOKO</label>
+                <input type="text" id="kode_toko" maxlength="4" oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <div class="data-input">
+                <label>NAMA PERSONIL</label>
+                <input type="text" id="nama_personil" oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <div class="data-input">
+                <label>NIK</label>
+                <input type="text" id="nik" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <div class="data-input">
+                <label>JABATAN</label>
+                <input type="text" id="jabatan" oninput="this.value = this.value.toUpperCase()">
+            </div>
 
-        <div class="keterangan-section">
-            <p>
-                Menerangkan potong sales Variance Plus senilai: 
-                <strong>Rp. </strong><input type="text" id="nilai_sales" placeholder="..." onkeyup="formatAngka(this)" style="width: 150px;">
-                <span id="nilai_sales_print" class="print-text"></span>
-            </p>
-            <p>
-                Tanggal kejadian: 
-                <input type="date" id="tanggal_kejadian"> 
-                <span id="tanggal_kejadian_print" class="print-text"></span>
-            </p>
-            <p>Dengan kronologi sebagai berikut:</p>
-            <textarea id="kronologi" placeholder="Tuliskan kronologi di sini..."></textarea>
-            <div id="kronologi_print" class="print-text" style="white-space: pre-wrap; min-height: 80px; width: 100%; border: 1px solid #eee; display:none; padding: 10px;"></div>
-        </div>
+            <div class="keterangan-section">
+                <p>Menerangkan pengajuan potong sales Variance Plus senilai : Rp. <input type="text" id="nilai_sales" placeholder="..." onkeyup="formatAngka(this)" style="width: 150px;"></p>
+                <p>
+                    tanggal varian 
+                    <input type="date" id="tanggal_kejadian">
+                    <span id="tanggal_kejadian_print" style="display:none; font-weight:bold; border-bottom: 1px solid #000;"></span>
+                </p>
+                <p>Dengan kronologi sbb :</p>
+                <textarea id="kronologi" placeholder="Tuliskan kronologi..."></textarea>
+                <div id="kronologi_print" style="display:none; white-space: pre-wrap; padding: 10px; min-height: 50px; border: none;"></div>
+            </div>
 
-        <p style="margin-top: 15px; font-size: 0.9em;">Demikian berita acara ini saya buat dengan sebenar-benarnya. Terima kasih.</p>
+            <div class="penutup-section">
+                <p>Demikian berita acara ini saya buat dengan sebenar benarnya, Terima kasih</p>
+            </div>
 
-        <div class="signature-main-grid">
+            <div class="ttd-grid">
+                <div class="ttd-box">
+                    <div style="text-align: left; font-size: 0.7em;">Sidoarjo, <input type="text" id="tgl_skrg" style="width: 70px; border: none; border-bottom: 1px solid #000;"></div>
+                    <p>Dibuat</p>
+                    <canvas id="canvas-personil" class="ttd-area"></canvas>
+                    <img id="img-personil" class="ttd-image">
+                    <div class="ttd-controls" id="btn-hapus-container">
+                        <button onclick="clearCanvas()">Hapus TTD</button>
+                    </div>
+                    <p><span id="label-jabatan">(Personil Toko)</span></p>
+                </div>
+
+                <div class="ttd-box"><p>Disetujui</p><div class="ttd-line"></div><p>(Area Supervisor)</p></div>
+                <div class="ttd-box"><p>Disetujui</p><div class="ttd-line"></div><p>(Area Manager)</p></div>
+                <div class="ttd-box"><p>Diketahui</p><div class="ttd-line"></div><p>(DBM Adm/Opr)</p></div>
+                <div class="ttd-box"><p>Diketahui</p><div class="ttd-line"></div><p>(EDP MGR)</p></div>
+                <div class="ttd-box"><p>Diketahui</p><div class="ttd-line"></div><p>(Office Manager)</p></div>
+            </div>
             
-            <div class="sub-grid">
-                <div class="ttd-single-box">
-                    <span class="ttd-label-top">Diketahui,</span>
-                    <div class="ttd-line"></div>
-                    <span class="ttd-label-bottom">(Area Supervisor)</span>
-                </div>
-                <div class="ttd-single-box">
-                    <span class="ttd-label-top">Diketahui,</span>
-                    <div class="ttd-line"></div>
-                    <span class="ttd-label-bottom">(Area Manager)</span>
-                </div>
-            </div>
-
-            <div class="ttd-single-box">
-                <span class="ttd-label-top">Sidoarjo, <span id="tgl_skrg"></span></span>
-                <span class="ttd-label-top" style="font-weight: bold;">Pembuat,</span>
-                <canvas id="sig-canvas" class="ttd-area"></canvas>
-                <img id="sig-image" class="ttd-image">
-                <div class="hide-on-export">
-                    <button onclick="clearSig()" style="font-size: 9px; cursor:pointer;">Hapus TTD</button>
-                </div>
-                <span class="ttd-label-bottom">( <span id="display_nama">TIM TOKO</span> )</span>
-            </div>
-
-            <div class="sub-grid">
-                <div class="ttd-single-box">
-                    <span class="ttd-label-top">Pemeriksa,</span>
-                    <div class="ttd-line"></div>
-                    <span class="ttd-label-bottom">(EDP Manager)</span>
-                </div>
-                <div class="ttd-single-box">
-                    <span class="ttd-label-top">Pemeriksa,</span>
-                    <div class="ttd-line"></div>
-                    <span class="ttd-label-bottom">(Office Manager)</span>
-                </div>
-            </div>
-
-            <div class="ttd-single-box">
-                <span class="ttd-label-top">Menyetujui,</span>
-                <div class="ttd-line" style="width: 160px;"></div>
-                <span class="ttd-label-bottom">(DBM OPR / BM)</span>
-            </div>
-
+            <div class="credit-text">Credit by kopi hitam</div>
         </div>
 
-        <div class="credit-text">Print File di admin area</div>
+        <div id="attachment-pages"></div>
+    </div>
+
+    <div class="image-upload-section" style="margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px;">
+        <h3>UPLOAD LAMPIRAN (Maks 3 Gambar)</h3>
+        <p>Tiap gambar akan menjadi 1 halaman baru.</p>
+        <input type="file" id="image_upload" accept="image/*" multiple onchange="previewImages()">
     </div>
 
     <script>
-        function onlyNumbers(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
-        function toUppercase(input) { input.value = input.value.toUpperCase(); }
         function formatAngka(input) {
             let val = input.value.replace(/[^0-9]/g, '');
             input.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // TTD Digital Logic
-        const canvas = document.getElementById('sig-canvas');
+        const canvas = document.getElementById('canvas-personil');
         const ctx = canvas.getContext('2d');
         let drawing = false;
 
-        canvas.width = 140;
-        canvas.height = 70;
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#000';
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#000';
+        }
+        window.addEventListener('load', resizeCanvas);
 
         function getPos(e) {
             const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            let clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            let clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
             return { x: clientX - rect.left, y: clientY - rect.top };
         }
 
         canvas.addEventListener('mousedown', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
         canvas.addEventListener('mousemove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); });
-        window.addEventListener('mouseup', () => drawing = false);
-        canvas.addEventListener('touchstart', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); });
-        canvas.addEventListener('touchmove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); });
+        canvas.addEventListener('mouseup', () => drawing = false);
+        canvas.addEventListener('touchstart', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }, {passive: false});
+        canvas.addEventListener('touchmove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }, {passive: false});
 
-        function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        function previewImages() {
+            const container = document.getElementById('attachment-pages');
+            const files = document.getElementById('image_upload').files;
+            if (files.length > 3) { alert('Maksimal 3 gambar.'); document.getElementById('image_upload').value = ''; container.innerHTML = ''; return; }
+            container.innerHTML = '';
+            Array.from(files).forEach((file, i) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'image-page-break';
+                    div.innerHTML = `<h2>LAMPIRAN SLIP TUTUPAN ${i+1}</h2><div class="image-box"><img src="${e.target.result}"></div>`;
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
 
         async function sharePDF() {
-            const nameInput = document.getElementById('nama_personil').value;
-            const kodeToko = document.getElementById('kode_toko').value || 'TOKO';
+            const actions = document.querySelector('.actions');
+            const uploadSection = document.querySelector('.image-upload-section');
+            const btnHapus = document.getElementById('btn-hapus-container');
+            const tglInput = document.getElementById('tanggal_kejadian');
+            const tglPrint = document.getElementById('tanggal_kejadian_print');
+            const kronoInput = document.getElementById('kronologi');
+            const kronoPrint = document.getElementById('kronologi_print');
+            const imgTTD = document.getElementById('img-personil');
+            const labelJabatan = document.getElementById('label-jabatan');
+            const jabatanInput = document.getElementById('jabatan');
 
-            // Swap Input to Text for PDF
-            document.getElementById('nilai_sales_print').innerText = document.getElementById('nilai_sales').value;
-            document.getElementById('nilai_sales').style.display = 'none';
-            document.getElementById('nilai_sales_print').style.display = 'inline';
-
-            document.getElementById('kronologi_print').innerText = document.getElementById('kronologi').value;
-            document.getElementById('kronologi').style.display = 'none';
-            document.getElementById('kronologi_print').style.display = 'block';
-
-            const tglVal = document.getElementById('tanggal_kejadian').value;
-            document.getElementById('tanggal_kejadian_print').innerText = tglVal ? tglVal.split('-').reverse().join('-') : '-';
-            document.getElementById('tanggal_kejadian').style.display = 'none';
-            document.getElementById('tanggal_kejadian_print').style.display = 'inline';
-
-            if(nameInput) document.getElementById('display_nama').innerText = nameInput;
-
-            const sigImg = document.getElementById('sig-image');
-            sigImg.src = canvas.toDataURL();
-            sigImg.style.display = 'block';
-            canvas.style.display = 'none';
             
-            document.querySelectorAll('.hide-on-export').forEach(el => el.style.display = 'none');
+            let tglFormatted = 'TANPA_TGL';
+            if (tglInput.value) {
+                const d = tglInput.value.split('-');
+                tglFormatted = `${d[2]}-${d[1]}-${d[0]}`;
+                tglPrint.innerText = ` ${tglFormatted}`;
+                tglPrint.style.display = 'inline-block';
+                tglInput.style.display = 'none';
+            }
+
+            
+            kronoPrint.innerText = kronoInput.value;
+            kronoPrint.style.display = 'block';
+            kronoInput.style.display = 'none';
+            if(jabatanInput.value) labelJabatan.innerText = `(${jabatanInput.value})`;
+
+            
+            actions.classList.add('hide-on-export');
+            uploadSection.classList.add('hide-on-export');
+            btnHapus.classList.add('hide-on-export');
+            canvas.classList.add('no-border-export');
+            imgTTD.classList.add('no-border-export');
+
+            
+            const dataURL = canvas.toDataURL();
+            if (dataURL.length > 2000) {
+                imgTTD.src = dataURL;
+                imgTTD.style.display = 'block';
+                canvas.style.display = 'none';
+            }
 
             const element = document.getElementById('pdf-content');
-            const filename = `BA_VAR_${kodeToko}.pdf`;
+            const kodeToko = document.getElementById('kode_toko').value || 'TOKO';
+            const pdfName = `BA_VAR_${kodeToko}_${tglFormatted}.pdf`;
 
             const opt = {
-                margin: [10, 5, 10, 5],
-                filename: filename,
+                margin: [0, 0, 0, 0],
+                filename: pdfName,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 3, useCORS: true },
+                html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             try {
                 const pdfBlob = await html2pdf().set(opt).from(element).outputPdf('blob');
-                const file = new File([pdfBlob], filename, { type: 'application/pdf' });
-
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        files: [file],
-                        title: 'Berita Acara Sales Variance',
-                    });
+                const file = new File([pdfBlob], pdfName, { type: 'application/pdf' });
+                
+                if (navigator.share) {
+                    await navigator.share({ files: [file], title: 'Berita Acara' });
                 } else {
-                    html2pdf().set(opt).from(element).save();
+                    const url = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = pdfName; a.click();
                 }
             } catch (err) {
-                alert("Proses PDF terganggu");
+                console.error(err);
+                alert('Gagal membuat PDF');
             } finally {
-                setTimeout(() => { location.reload(); }, 1500); 
+                
+                actions.classList.remove('hide-on-export');
+                uploadSection.classList.remove('hide-on-export');
+                btnHapus.classList.remove('hide-on-export');
+                canvas.classList.remove('no-border-export');
+                imgTTD.classList.remove('no-border-export');
+                imgTTD.style.display = 'none';
+                canvas.style.display = 'block';
+                tglPrint.style.display = 'none';
+                tglInput.style.display = 'inline-block';
+                kronoPrint.style.display = 'none';
+                kronoInput.style.display = 'block';
             }
         }
 
-        const now = new Date();
-        document.getElementById('tgl_skrg').innerText = `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`;
+        const today = new Date();
+        document.getElementById('tgl_skrg').value = String(today.getDate()).padStart(2, '0') + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + today.getFullYear();
     </script>
 </body>
 </html>
