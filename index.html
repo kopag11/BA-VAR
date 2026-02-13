@@ -222,8 +222,10 @@
             <div class="ttd-grid">
                 <div class="ttd-box">
                     <div style="text-align: left; font-size: 0.7em;">
-                        <input type="text" id="input_kota" value="Sidoarjo" style="width: 60px; border: none; border-bottom: 1px solid #000; font-size: 1em;">, 
-                        <input type="text" id="tgl_skrg" style="width: 70px; border: none; border-bottom: 1px solid #000;">
+                        <span id="kota_tgl_input_container">
+                            <input type="text" id="input_kota" value="Sidoarjo" style="width: 60px; border: none; border-bottom: 1px solid #000; font-size: 1em;">, 
+                            <input type="text" id="tgl_skrg" style="width: 70px; border: none; border-bottom: 1px solid #000;">
+                        </span>
                         <span id="kota_tgl_print" style="display: none; font-weight: normal;"></span>
                     </div>
                     <p>Dibuat</p>
@@ -315,6 +317,7 @@
             
             const kotaInput = document.getElementById('input_kota');
             const tglSkrgInput = document.getElementById('tgl_skrg');
+            const kotaTglContainer = document.getElementById('kota_tgl_input_container');
             const kotaTglPrint = document.getElementById('kota_tgl_print');
 
             const kronoInput = document.getElementById('kronologi');
@@ -322,7 +325,6 @@
             const imgTTD = document.getElementById('img-personil');
             const labelJabatan = document.getElementById('label-jabatan');
             const jabatanInput = document.getElementById('jabatan');
-
             
             let tglFormatted = 'TANPA_TGL';
             if (tglInput.value) {
@@ -333,26 +335,24 @@
                 tglInput.style.display = 'none';
             }
 
-            
+
             kotaTglPrint.innerText = `${kotaInput.value}, ${tglSkrgInput.value}`;
             kotaTglPrint.style.display = 'inline';
-            kotaInput.style.display = 'none';
-            tglSkrgInput.style.display = 'none';
+            kotaTglContainer.style.display = 'none';
 
-            
+
             kronoPrint.innerText = kronoInput.value;
             kronoPrint.style.display = 'block';
             kronoInput.style.display = 'none';
             if(jabatanInput.value) labelJabatan.innerText = `(${jabatanInput.value})`;
 
-            
+
             actions.classList.add('hide-on-export');
             uploadSection.classList.add('hide-on-export');
             btnHapus.classList.add('hide-on-export');
             canvas.classList.add('no-border-export');
             imgTTD.classList.add('no-border-export');
 
-            
             const dataURL = canvas.toDataURL();
             if (dataURL.length > 2000) {
                 imgTTD.src = dataURL;
@@ -387,7 +387,7 @@
                 console.error(err);
                 alert('Gagal membuat PDF');
             } finally {
-                
+       
                 actions.classList.remove('hide-on-export');
                 uploadSection.classList.remove('hide-on-export');
                 btnHapus.classList.remove('hide-on-export');
@@ -400,8 +400,7 @@
                 tglInput.style.display = 'inline-block';
                 
                 kotaTglPrint.style.display = 'none';
-                kotaInput.style.display = 'inline-block';
-                tglSkrgInput.style.display = 'inline-block';
+                kotaTglContainer.style.display = 'inline';
                 
                 kronoPrint.style.display = 'none';
                 kronoInput.style.display = 'block';
